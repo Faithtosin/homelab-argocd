@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  namespace: none
+  name: traefik-custom
+  labels:
+    app.kubernetes.io/type: traefik
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`traefik.faithtosin.cloud`)
+      kind: Rule
+      services:
+        - name: traefik
+          port: 80
+  # tls:
+  #   secretName: letsencrypt-production-tls
