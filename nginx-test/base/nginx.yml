@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-test-app
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx-test-app
+          image: nginx:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            timeoutSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+              scheme: HTTP
+            timeoutSeconds: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-test-app
+spec:
+  selector:
+    app: nginx
+  ports:
+    - name: nginx-test-app
+      protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+spec:
+  limits:
+  - default:
+      memory: 256Mi
+      cpu: "0.3"
+    defaultRequest:
+      memory: 100Mi
+      cpu: "0.1"
+    type: Container
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  namespace: none
+  name: nginx-test-ingressroute
+  labels:
+    app.kubernetes.io/type: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`test.faithtosin.cloud`)
+      kind: Rule
+      services:
+        - name: nginx-test-app
+          port: 80
+  # tls:
+  #   secretName: letsencrypt-production-tls

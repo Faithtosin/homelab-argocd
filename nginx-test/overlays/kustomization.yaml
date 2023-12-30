@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  env: demo
+namespace: nginx-test-app
+#Container image, uses image name to match the image in the base
+images:
+- name: nginx
+  newTag: latest
+  #newName: my-registry/my-postgres
+
+resources:
+- namespace.yaml
+- ../base
+patches:
+- patch: "- op: replace\n  path: /spec/routes/0/match\n  value: Host(`nginx.githubcode.space`)
+    \  "
+  target:
+    labelSelector: app.kubernetes.io/type=traefik

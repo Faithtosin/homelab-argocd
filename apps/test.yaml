@@ -11,13 +11,12 @@ spec:
         controller: argocd
       commonAnnotations:
         beep: boop
-
-    repoURL: https://github.com/Faithtosin/argocd-apps.git
+    repoURL: https://github.com/Faithtosin/homelab-argocd.git
     targetRevision: HEAD
-    path: simpleapp-public/overlays/demo
+    path: nginx-test/overlays
   destination:
     server: https://kubernetes.default.svc
-    #namespace: streamlit
+    #namespace: default
   syncPolicy:
     automated:
       prune: true
