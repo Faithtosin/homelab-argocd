@@ -1,0 +1,18 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  namespace: none
+  name: argocd
+  labels:
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/part-of: argocd
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`argocd.faithtosin.cloud`)
+      kind: Rule
+      services:
+        - name: argocd-server
+          port: 80
