@@ -13,7 +13,6 @@ spec:
     - match: Host(`traefik.faithtosin.cloud`)
       kind: Rule
       services:
-        - name: traefik
-          port: 80
-  # tls:
-  #   secretName: letsencrypt-production-tls
+      - name: api@internal
+        kind: TraefikService
+      serversTransport: traefik-dashboard-transport
