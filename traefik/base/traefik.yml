@@ -7,12 +7,9 @@ metadata:
   labels:
     app.kubernetes.io/type: traefik
 spec:
-  entryPoints:
-    - web
   routes:
     - match: Host(`traefik.faithtosin.cloud`)
       kind: Rule
       services:
       - name: api@internal
         kind: TraefikService
-      serversTransport: traefik-dashboard-transport
