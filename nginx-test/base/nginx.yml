@@ -70,6 +70,7 @@ metadata:
 spec:
   entryPoints:
     - websecure
+    - web
   routes:
     - match: Host(`test.faithtosin.cloud`)
       kind: Rule
