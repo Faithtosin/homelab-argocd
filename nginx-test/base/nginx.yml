@@ -69,7 +69,6 @@ metadata:
     app.kubernetes.io/type: traefik
 spec:
   entryPoints:
-    - websecure
     - web
   routes:
     - match: Host(`test.faithtosin.cloud`)
